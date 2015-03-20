@@ -1,0 +1,116 @@
+
+; c2p1x1_8_c0
+
+	IFND	BPLX
+BPLX	EQU	320
+	ENDC
+	IFND	BPLY
+BPLY	EQU	256
+	ENDC
+	IFND	BPLSIZE
+BPLSIZE	EQU	BPLX*BPLY/8
+	ENDC
+	IFND	CHUNKYXMAX
+CHUNKYXMAX EQU	BPLX
+	ENDC
+	IFND	CHUNKYYMAX
+CHUNKYYMAX EQU	BPLY
+	ENDC
+
+	section	code,code
+
+; d0.w	chunkyx [chunky-pixels]
+; d1.w	chunkyy [chunky-pixels]
+; d2.w	(scroffsx) [screen-pixels]
+; d3.w	scroffsy [screen-pixels]
+; d4.w	(rowlen) [bytes] -- offset between one row and the next in a bpl
+; d5.l	(bplsize) [bytes] -- offset between one row in one bpl and the next bpl
+
+c2p1x1_8_c0_init
+	movem.l	d2-d3,-(sp)
+	andi.l	#$ffff,d0
+	mulu.w	d0,d3
+	lsr.l	#3,d3
+	move.l	d3,c2p1x1_8_c0_scroffs
+	mulu.w	d0,d1
+	move.l	d1,c2p1x1_8_c0_pixels
+	movem.l	(sp)+,d2-d3
+	rts
+
+; a0	c2pscreen
+; a1	bitplanes
+
+c2p1x1_8_c0
+	movem.l	d2-d7/a2-a6,-(sp)
+
+	add.w	#BPLSIZE,a1
+	add.l	c2p1x1_8_c0_scroffs,a1
+	lea	c2p1x1_8_c0_tempbuf,a3
+
+	move.l	c2p1x1_8_c0_pixels,a2
+	add.l	a0,a2
+	cmp.l	a0,a2
+	beq.s	.none
+
+	move.l	a1,-(sp)
+
+.x1
+	move.l	(a0)+,d2
+	move.l	(a0)+,d5
+	move.l	(a0)+,d3
+	move.l	(a0)+,d6
+
+	move.l	d2,(a3)+
+	move.l	d3,(a3)+
+
+	move.l	(a0)+,d0
+	move.l	(a0)+,d2
+	move.l	(a0)+,d1
+	move.l	(a0)+,d3
+
+	move.l	d7,BPLSIZE(a1)
+	move.l	a4,(a1)+
+
+	move.l	d0,(a3)+
+	move.l	d1,(a3)+
+
+	move.l	a5,-BPLSIZE-4(a1)
+	move.l	d5,BPLSIZE*2(a1)
+
+	cmpa.l	a0,a2
+	bne.s	.x1
+.x1end
+
+	move.l	(sp)+,a1
+	add.l	#BPLSIZE*4,a1
+
+	lea	c2p1x1_8_c0_tempbuf,a0
+	move.l	c2p1x1_8_c0_pixels,d0
+	lsr.l	d0
+	lea	(a0,d0.l),a2
+
+.x2
+	move.l	(a0)+,d0
+	move.l	(a0)+,d1
+	move.l	(a0)+,d2
+	move.l	(a0)+,d3
+
+	move.l	d7,BPLSIZE(a1)
+	move.l	a4,(a1)+
+	move.l	a5,-BPLSIZE-4(a1)
+	move.l	d0,BPLSIZE*2(a1)
+
+	cmpa.l	a0,a2
+	bne.s	.x2
+.x2end
+
+.none
+	movem.l	(sp)+,d2-d7/a2-a6
+	rts
+
+	section	bss,bss
+
+c2p1x1_8_c0_scroffs	ds.l	1
+c2p1x1_8_c0_pixels	ds.l	1
+
+c2p1x1_8_c0_tempbuf	ds.b	CHUNKYXMAX*CHUNKYYMAX/2

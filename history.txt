@@ -1,0 +1,40 @@
+
+2010-04-26
+  normal/c2p1x1_5_c5_060.s bugfixed
+
+2000-05-27
+  bitmap/c2p2x2_8_c5_bm.s bugfix (weird output) & speedup
+
+2000-05-26
+  bitmap/c2p2x2_8_c5_bm.s added
+
+2000-04-17
+  normal/c2p1x1_6_c5_030.s now has SMC method for changing bplsize
+  normal/c2p1x1_6_c5_030_2.s now has SMC method for changing bplsize
+  normal/c2p1x1_8_c5_030.s now has SMC method for changing bplsize
+  normal/c2p1x1_8_c5_030_2.s now has SMC method for changing bplsize
+  bitmap/c2p1x1_6_c5_bm_040.s added
+  bitmap/c2p1x1_8_c5_bm_040.s added
+  normal/c2p1x1_6_c5_040.s now changes bplsize without SMC
+  normal/c2p1x1_6_c5_040.s old version goes into old/1998/
+
+2000-04-11
+  normal/c2p1x1_8_c5_040.s now changes bplsize without SMC
+  normal/c2p1x1_8_c5_040.s old version goes into old/1998/
+  normal/c2p1x1_8_c3b1_gen.s goes into old/1998/ (it was really not useful!)
+
+1999-12-06
+  normal/c2p2x1_8_c5_gen.s added
+  normal/c2p2x2_8_c5_gen.s added
+  special/c2p1x1_4_c5_word.s added
+
+1999-03-07
+  bitmap/c2p1x1_8_c5_bm.s is now 100% PC-relative
+  bitmap/c2p1x1_6_c5_bm.s created, 100% PC-relative
+
+1999-02-13
+  normal/c2p1x1_6_c5_030_2.s bugfix (bpl4/bpl5 order was swapped)
+ 
+1999-02-01
+  First release
+

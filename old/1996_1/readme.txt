@@ -1,0 +1,1 @@
+These c2ps are from around August-September '96, when I did the first releases

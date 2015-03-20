@@ -1,0 +1,130 @@
+
+First off, define the equates BPLX, BPLY, BPLSIZE, CHUNKYXMAX and CHUNKYYMAX,
+if any of those are needed by the C2P (most do), or just for your own
+convenience.
+
+BPLX/BPLY denote the dimensions of the screen, measured in hardware-pixels.
+BPLSIZE is the offset between the start of a bitplane and the next --
+  usually this is equal to BPLX*BPLY/8.
+CHUNKYXMAX/CHUNKYYMAX should give the maximum dimensions of the chunkybuffer,
+  measured in chunky-pixel units. Some c2p routines (cpublit, and a few
+  cpu-only 030-routines) use these equates to define temporary buffers, and
+  you should therefore specify the _maximum_ chunkybuffer size that you're
+  going to use here. If you don't do that, then tempbuffer-using routines
+  will trash memory!
+
+
+**** Using the c2p ****
+
+Each c2p is split up into two routines, the init routine and the actual
+conversion routine.
+
+The init takes a set of parameters which describe the chunkybuffer and screen,
+calculates loop-lengths, relocates code if necessary (this is done
+in very few routines), and is only needed to be called once.
+
+The general format for the init routine's parameters is:
+
+; d0.w	chunkyx [chunky-pixels]
+; d1.w	chunkyy [chunky-pixels]
+; d2.w	scroffsx [screen-pixels]
+; d3.w	scroffsy [screen-pixels]
+; d4.l	rowlen [bytes] -- offset between one row and the next in a bpl
+; d5.l	bplsize [bytes] -- offset between one row in one bpl and the next bpl
+; d6.l	chunkylen [bytes] -- offset between one row and the next in chunkybuf
+
+A chunky-pixel can be more than 1 byte wide, if you are using the 15/16/32bpp
+converters, for example, then a chunkypixel is 2/4 bytes wide!
+If a parameter is within parentheses in a certain c2p's documentation,
+then it is ignored by that c2p.
+
+Chunkyx/chunkyy (d0/d1) specify width and height (in chunkypixels) of the
+area to convert. d0/d1 are read by practically all init-routines.
+
+Scroffsx/scroffsy (d2/d3) specify X/Y offsets of the output; that is,
+if the c2p conversion should output to a sub-"window" on screen, then
+specify the window's upper left corner here. d2/d3 are only read by
+init-routines of c2ps which support horizontal modulos (most 040 do,
+but few 030).
+Normally, d2 should be an even multiple of 8, and for best performance,
+d2 should be an even multiple of 32.
+
+Rowlen/bplsize (d4/d5) specify the length of a bitplane row, and the size of
+a bitplane, respectively. Since these parameters deal with memory addresses,
+the dimensions should be given as _bytes_, not as _pixels_.
+d4 is only read by modulo-supporting c2ps, and d5 is read by all c2ps which
+do not have hardcoded BPLSIZE(an) references in the code (mostly
+030 cpu-only routines).
+For best performance, d4 and d5 should be even multiples of 4. (Do not open
+screens which are n+16 pixels wide please, they will go vastly slower!)
+NOTICE: Some init-routines only use the low word of d4! Verify whether this
+is the case or not in the specific c2p's documentation, if necessary.
+
+Chunkylen (d6) finally specifies the length of a chunkybuffer row, in bytes
+(as opposed to the d0/d1 parameters which use the unit of chunkypixels).
+This value is only read by modulo-supporting c2ps.
+NOTICE: Some modulo-supporting c2ps don't support this parameter yet.
+Verify it in the specific c2p's documentation, if necessary.
+
+
+
+When using the c2p routines, you should first call the init routine once,
+and after that you may use the corresponding converter as many times
+as you like.
+
+
+
+**** Examples ****
+
+Example of 320x256 8bpl conversion, on 030:
+
+BPLX	EQU	320
+BPLY	EQU	256
+BPLSIZE	EQU	BPLX*BPLY/8
+CHUNKYXMAX EQU	BPLX
+CHUNKYYMAX EQY	BPLY
+
+	move.w	#CHUNKYXMAX,d0
+	move.w	#CHUNKYYMAX,d1
+	moveq	#0,d2			; Not used by this c2p
+	moveq	#0,d3			;         -"-
+	move.l	#BPLX/8,d4		;         -"-
+	move.l	#BPLSIZE,d5		; Only partially used by this c2p
+	move.l	#CHUNKYXMAX,d6		; Not used by this c2p
+	bsr	c2p1x1_8_c5_030_init	; Init c2p
+
+.mainloop
+	lea	chunkybuffer,a0
+	move.l	screenptr,a1
+	bsr	c2p1x1_8_c5_030		; Perform conversion!
+	bra.s	.mainloop
+
+	include	normal/c2p1x1_8_c5_030.s
+
+
+Example of 160x200 ARGB8888 to 640x200 RGBB6666 HAM8 conversion, on 040:
+
+BPLX	EQU	640
+BPLY	EQU	200
+BPLSIZE	EQU	BPLX*BPLY/8
+CHUNKYXMAX EQU	BPLX/4			; One chunkypixel (ARGB) becomes four
+CHUNKYYMAX EQY	BPLY			; hardware-pixels horizontally!
+
+	move.w	#CHUNKYXMAX,d0		; Chunky dimensions to convert
+	move.w	#CHUNKYYMAX,d1
+	moveq	#0,d2			; Screen XY offset for output
+	moveq	#0,d3
+	move.l	#BPLX/8,d4
+	move.l	#BPLSIZE,d5
+	move.l	#CHUNKYXMAX*4,d6	; One chunkypixel = 4 bytes
+	bsr	c2p_4rgb888_4rgb666h8_040_init ; Init c2p
+
+.mainloop
+	lea	chunkybuffer,a0
+	move.l	screenptr,a1		; First two bitplanes contain control
+	add.l	#BPLSIZE*2,a1		; data (filled in by user)
+	bsr	c2p_4rgb888_4rgb666h8_040 ; Perform conversion!
+	bra.s	.mainloop
+
+	include	ham8/c2p_4rgb888_4rgb666h8_040.s
+
