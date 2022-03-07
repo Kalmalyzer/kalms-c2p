@@ -166,10 +166,9 @@ c2p1x1_5_c5_030
 	move.w	d3,d1
 	move.w	d7,d3
 
-	lsl.l	#6,d1			; Swap/Merge 2x4, part 1
-	lsl.l	#4,d3
-	or.l	d1,d3
-	move.l	d3,a4
+	lsl.l 	#2,d1 			; Swap/Merge 2x4, part 1
+	or.l 	d1,d3
+	move.l 	d3,(a3)+
 
 	move.l	(a0)+,d1
 	move.l	(a0)+,d3
@@ -192,7 +191,6 @@ c2p1x1_5_c5_030
 
 	lsl.l	#2,d0			; Swap/Merge 2x4, part 2
 	or.l	d0,d1
-	add.l	a4,d1
 	move.l	d1,(a3)+
 
 .start1
