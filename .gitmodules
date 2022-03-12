@@ -1,0 +1,3 @@
+[submodule "amiga-utils"]
+	path = amiga-utils
+	url = https://github.com/skeetor/amiga-utils
