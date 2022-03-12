@@ -27,11 +27,6 @@
 ; c2p1x1_6_c5_040			performs the actual c2p conversion
 ;
 
-
-	XDEF	_c2p1x1_6_c5_040_init
-	XDEF	_c2p1x1_6_c5_040
-
-
 	section	code,code
 
 ; d0.w	chunkyx [chunky-pixels]
@@ -42,6 +37,8 @@
 ; d5.l	bplsize [bytes] -- offset between one row in one bpl and the next bpl
 ; d6.l	(chunkylen) [bytes] -- offset between one row and the next in chunkybuf
 
+	XDEF	_c2p1x1_6_c5_040_init
+	XDEF	c2p1x1_6_c5_040_init
 _c2p1x1_6_c5_040_init
 c2p1x1_6_c5_040_init
 	move.l	d3,-(sp)
@@ -69,6 +66,8 @@ c2p1x1_6_c5_040_init
 ; a0	chunkybuffer
 ; a1	bitplanes
 
+	XDEF	_c2p1x1_6_c5_040
+	XDEF	c2p1x1_6_c5_040
 _c2p1x1_6_c5_040
 c2p1x1_6_c5_040
 
