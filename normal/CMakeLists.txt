@@ -1,12 +1,14 @@
 
 set(ASM_SOURCES
   c2p1x1_8_c5_030.s
+  c2p1x1_8_c5_030_2.s
   c2p1x1_8_c5_040.s
   c2p1x1_8_c5_gen.s)
 
 set(C_SOURCES
   normal_test.c
   c2p1x1_8_c5_030_test.c c2p1x1_8_c5_030.h
+  c2p1x1_8_c5_030_2_test.c c2p1x1_8_c5_030_2.h
   c2p1x1_8_c5_040_test.c c2p1x1_8_c5_040.h
   c2p1x1_8_c5_gen_test.c c2p1x1_8_c5_gen.h)
 
