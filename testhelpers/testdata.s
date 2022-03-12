@@ -1,6 +1,24 @@
 
 		section	data,data
 
+		XDEF	random_320x256x2bpl_chunky
+		XDEF	_random_320x256x2bpl_chunky
+random_320x256x2bpl_chunky
+_random_320x256x2bpl_chunky
+		incbin	random_320x256x2bpl_chunky.dat
+
+		XDEF	random_320x256x4bpl_chunky
+		XDEF	_random_320x256x4bpl_chunky
+random_320x256x4bpl_chunky
+_random_320x256x4bpl_chunky
+		incbin	random_320x256x4bpl_chunky.dat
+
+		XDEF	random_320x256x5bpl_chunky
+		XDEF	_random_320x256x5bpl_chunky
+random_320x256x5bpl_chunky
+_random_320x256x5bpl_chunky
+		incbin	random_320x256x5bpl_chunky.dat
+
 		XDEF	random_320x256x6bpl_chunky
 		XDEF	_random_320x256x6bpl_chunky
 random_320x256x6bpl_chunky
