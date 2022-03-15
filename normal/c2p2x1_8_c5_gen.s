@@ -54,6 +54,8 @@ C2P2X1_8_C5_GEN_DATASIZE	rs.b	0
 ; d5.l	bplsize [bytes] -- offset between one row in one bpl and the next bpl
 ; d6.l	chunkylen [bytes] -- offset between one row and the next in chunkybuf
 
+	XDEF	_c2p2x1_8_c5_gen_init
+	XDEF	c2p2x1_8_c5_gen_init
 _c2p2x1_8_c5_gen_init
 c2p2x1_8_c5_gen_init
 	movem.l	d2-d6,-(sp)
@@ -90,6 +92,8 @@ c2p2x1_8_c5_gen_init
 ; a0	chunkybuffer
 ; a1	bitplanes
 
+	XDEF	_c2p2x1_8_c5_gen
+	XDEF	c2p2x1_8_c5_gen
 _c2p2x1_8_c5_gen
 c2p2x1_8_c5_gen
 	movem.l	d2-d7/a2-a6,-(sp)
