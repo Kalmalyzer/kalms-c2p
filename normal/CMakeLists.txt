@@ -19,7 +19,8 @@ set(ASM_SOURCES
   c2p2x1_6_c5_030.s
   c2p2x1_8_c4b1_gen.s
   c2p2x1_8_c5_030.s
-  c2p2x1_8_c5_gen.s)
+  c2p2x1_8_c5_gen.s
+  c2p2x2_8_c5_gen.s)
 
 set(C_SOURCES
   normal_test.c
@@ -43,7 +44,8 @@ set(C_SOURCES
   c2p2x1_6_c5_030_test.c c2p2x1_6_c5_030.h
   c2p2x1_8_c4b1_gen_test.c c2p2x1_8_c4b1_gen.h
   c2p2x1_8_c5_030_test.c c2p2x1_8_c5_030.h
-  c2p2x1_8_c5_gen_test.c c2p2x1_8_c5_gen.h)
+  c2p2x1_8_c5_gen_test.c c2p2x1_8_c5_gen.h
+  c2p2x2_8_c5_gen_test.c c2p2x2_8_c5_gen.h)
 
 set_source_files_properties(${ASM_SOURCES} PROPERTIES LANGUAGE AMIGA_VASM)
 

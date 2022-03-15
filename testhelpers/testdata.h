@@ -15,6 +15,7 @@ extern uint8_t random_320x256x6bpl_chunky[];
 extern uint8_t random_320x256x8bpl_chunky[];
 extern uint8_t random_320x256x8bpl_planar[];
 extern uint8_t random_320x256x8bpl_2x1_planar[];
+extern uint8_t random_320x256x8bpl_2x2_planar[];
 
 extern uint8_t tempbuf[];
 

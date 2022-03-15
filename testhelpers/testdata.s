@@ -55,6 +55,12 @@ random_320x256x8bpl_2x1_planar
 _random_320x256x8bpl_2x1_planar
 		incbin	random_320x256x8bpl_2x1_planar.dat
 
+		XDEF	random_320x256x8bpl_2x2_planar
+		XDEF	_random_320x256x8bpl_2x2_planar
+random_320x256x8bpl_2x2_planar
+_random_320x256x8bpl_2x2_planar
+		incbin	random_320x256x8bpl_2x2_planar.dat
+
 		section	bss,bss
 
 		XDEF	tempbuf
