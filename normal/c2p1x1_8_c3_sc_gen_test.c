@@ -28,4 +28,3 @@ UTEST(normal, c2p1x1_8_c3_sc_gen) {
 
 	ASSERT_ARRAY_EQ(random_320x256x8bpl_planar, tempbuf, bplsize * depth);
 }
-// planar output: chunky[0], chunky[4], chunky[8], chunky[12], chunky[16], chunky[20], ...
