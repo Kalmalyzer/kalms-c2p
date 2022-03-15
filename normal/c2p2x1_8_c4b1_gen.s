@@ -1,5 +1,5 @@
 
-; c2p2x1_8_c4b1
+; c2p2x1_8_c4b1_gen
 
 	IFND	BPLX
 BPLX	EQU	320
@@ -17,6 +17,11 @@ CHUNKYXMAX EQU	BPLX
 CHUNKYYMAX EQU	BPLY
 	ENDC
 
+	include hardware/custom.i
+	include	lvo/graphics_lib.i
+
+	XDEF	_GfxBase
+
 	section	c2p,code
 
 ; d0.w	chunkyx [chunky-pixels]
@@ -26,58 +31,67 @@ CHUNKYYMAX EQU	BPLY
 ; d4.w	(rowlen) [bytes] -- offset between one row and the next in a bpl
 ; d5.l	bplsize [bytes] -- offset between one row in one bpl and the next bpl
 
-c2p2x1_8_c4b1_init
+	XDEF	_c2p2x1_8_c4b1_gen_init
+	XDEF	c2p2x1_8_c4b1_gen_init
+_c2p2x1_8_c4b1_gen_init
+c2p2x1_8_c4b1_gen_init
 	movem.l	d2-d3,-(sp)
-	lea	c2p_datanew(pc),a0
+	lea	c2p2x1_8_c4b1_gen_datanew(pc),a0
 	andi.l	#$ffff,d0
-	move.l	d5,c2p_bplsize-c2p_data(a0)
+	move.l	d5,c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_data(a0)
 	move.w	d3,d2
 	mulu.w	d0,d2
 	lsr.l	#2,d2
-	move.l	d2,c2p_scroffs-c2p_data(a0)
+	move.l	d2,c2p2x1_8_c4b1_gen_scroffs-c2p2x1_8_c4b1_gen_data(a0)
 	add.w	d1,d3
 	mulu.w	d0,d3
 	lsr.l	#2,d3
 	subq.w	#2,d3
-	move.l	d3,c2p_scroffs2-c2p_data(a0)
+	move.l	d3,c2p2x1_8_c4b1_gen_scroffs2-c2p2x1_8_c4b1_gen_data(a0)
 	mulu.w	d0,d1
-	move.l	d1,c2p_pixels-c2p_data(a0)
+	move.l	d1,c2p2x1_8_c4b1_gen_pixels-c2p2x1_8_c4b1_gen_data(a0)
 	lsr.l	#4,d1
-	move.l	d1,c2p_pixels16-c2p_data(a0)
+	move.l	d1,c2p2x1_8_c4b1_gen_pixels16-c2p2x1_8_c4b1_gen_data(a0)
 	movem.l	(sp)+,d2-d3
 	rts
 
-c2p_blitcleanup
-	st	c2p_blitfin-c2p_bltnode(a1)
-	sf	c2p_blitactive-c2p_bltnode(a1)
+c2p2x1_8_c4b1_gen_blitcleanup
+	st	c2p2x1_8_c4b1_gen_blitfin-c2p2x1_8_c4b1_gen_bltnode(a1)
+	sf	c2p2x1_8_c4b1_gen_blitactive-c2p2x1_8_c4b1_gen_bltnode(a1)
 	rts
 
-c2p_waitblit
-	tst.b	c2p_blitactive(pc)
+	XDEF	_c2p2x1_8_c4b1_gen_waitblit
+	XDEF	c2p2x1_8_c4b1_gen_waitblit
+_c2p2x1_8_c4b1_gen_waitblit
+c2p2x1_8_c4b1_gen_waitblit
+	tst.b	c2p2x1_8_c4b1_gen_blitactive(pc)
 	beq.s	.n
-.y	tst.b	c2p_blitfin(pc)
+.y	tst.b	c2p2x1_8_c4b1_gen_blitfin(pc)
 	beq.s	.y
 .n	rts
 
 ; a0	c2pscreen
 ; a1	bitplanes
 
-c2p2x1_8_c4b1
+	XDEF	_c2p2x1_8_c4b1_gen
+	XDEF	c2p2x1_8_c4b1_gen
+_c2p2x1_8_c4b1_gen
+c2p2x1_8_c4b1_gen
 	movem.l	d2-d7/a2-a6,-(sp)
 
-	move.w	#.x2-.x,d0
-	bsr.s	c2p_waitblit
-	bsr	c2p_copyinitblock
+	bsr.s	c2p2x1_8_c4b1_gen_waitblit
+	bsr	c2p2x1_8_c4b1_gen_copyinitblock
 
-	lea	c2p_data(pc),a2
-	move.l	a1,c2p_screen-c2p_data(a2)
-
-	lea	c2p_blitbuf,a1
+	lea	c2p2x1_8_c4b1_gen_data(pc),a3
+	move.l	a1,c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_data(a3)
+	move.l	a2,c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_data(a3)
+	move.l	a2,a1
+	move.l	a3,a2
 
 	move.l	#$0f0f0f0f,d5
 	move.l	#$00ff00ff,a6
 
-	move.l	c2p_pixels-c2p_data(a2),a2
+	move.l	c2p2x1_8_c4b1_gen_pixels-c2p2x1_8_c4b1_gen_data(a2),a2
 	add.l	a0,a2
 	cmpa.l	a0,a2
 	beq	.none
@@ -215,25 +229,25 @@ c2p2x1_8_c4b1
 	move.l	a4,(a1)+
 	move.l	a5,(a1)+
 
-	lea	c2p_data(pc),a2
-	sf	c2p_blitfin-c2p_data(a2)
-	st	c2p_blitactive-c2p_data(a2)
-	lea	c2p_bltnode(pc),a1
-	move.l	#c2p2x1_8_c4b1_51,c2p_bltroutptr-c2p_bltnode(a1)
-	move.l	gfxbase,a6
+	lea	c2p2x1_8_c4b1_gen_data(pc),a2
+	sf	c2p2x1_8_c4b1_gen_blitfin-c2p2x1_8_c4b1_gen_data(a2)
+	st	c2p2x1_8_c4b1_gen_blitactive-c2p2x1_8_c4b1_gen_data(a2)
+	lea	c2p2x1_8_c4b1_gen_bltnode(pc),a1
+	move.l	#c2p2x1_8_c4b1_gen_51,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
+	move.l	_GfxBase,a6
 	jsr	_LVOQBlit(a6)
 .none
 	movem.l	(sp)+,d2-d7/a2-a6
 	rts
 
-c2p2x1_8_c4b1_51
+c2p2x1_8_c4b1_gen_51
 	move.w	#-1,bltafwm(a0)
 	move.w	#-1,bltalwm(a0)
-	move.l	#c2p_blitbuf,bltapt(a0)
-	move.l	#c2p_blitbuf,bltbpt(a0)
-	move.l	c2p_bplsize-c2p_bltnode(a1),d0
-	add.l	c2p_screen-c2p_bltnode(a1),d0
-	add.l	c2p_scroffs-c2p_bltnode(a1),d0
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),bltapt(a0)
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),bltbpt(a0)
+	move.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_scroffs-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltdpt(a0)
 	move.w	#12,bltamod(a0)
 	move.w	#12,bltbmod(a0)
@@ -241,126 +255,136 @@ c2p2x1_8_c4b1_51
 	move.w	#$aaaa,bltcdat(a0)
 	move.w	#$0de4,bltcon0(a0)
 	move.w	#$1000,bltcon1(a0)
-	move.w	c2p_pixels16+2-c2p_bltnode(a1),bltsizv(a0)
+	move.w	c2p2x1_8_c4b1_gen_pixels16+2-c2p2x1_8_c4b1_gen_bltnode(a1),bltsizv(a0)
 	move.w	#2,bltsizh(a0)
-	move.l	#c2p2x1_8_c4b1_52,c2p_bltroutptr-c2p_bltnode(a1)
+	move.l	#c2p2x1_8_c4b1_gen_52,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
 	rts
 
-c2p2x1_8_c4b1_52
-	move.l	#c2p_blitbuf+12,bltapt(a0)
-	move.l	#c2p_blitbuf+12,bltbpt(a0)
-	move.l	c2p_bplsize-c2p_bltnode(a1),d0
+c2p2x1_8_c4b1_gen_52
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	#12,d0
+	move.l	d0,bltapt(a0)
+	move.l	d0,bltbpt(a0)
+	move.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	add.l	d0,d0
-	add.l	c2p_bplsize-c2p_bltnode(a1),d0
-	add.l	c2p_screen-c2p_bltnode(a1),d0
-	add.l	c2p_scroffs-c2p_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_scroffs-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltdpt(a0)
-	move.w	c2p_pixels16+2-c2p_bltnode(a1),bltsizv(a0)
+	move.w	c2p2x1_8_c4b1_gen_pixels16+2-c2p2x1_8_c4b1_gen_bltnode(a1),bltsizv(a0)
 	move.w	#2,bltsizh(a0)
-	move.l	#c2p2x1_8_c4b1_53,c2p_bltroutptr-c2p_bltnode(a1)
+	move.l	#c2p2x1_8_c4b1_gen_53,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
 	rts
 
-c2p2x1_8_c4b1_53
-	move.l	#c2p_blitbuf+8,bltapt(a0)
-	move.l	#c2p_blitbuf+8,bltbpt(a0)
-	move.l	c2p_bplsize-c2p_bltnode(a1),d0
+c2p2x1_8_c4b1_gen_53
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	addq.l	#8,d0
+	move.l	d0,bltapt(a0)
+	move.l	d0,bltbpt(a0)
+	move.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	lsl.l	#2,d0
-	add.l	c2p_bplsize-c2p_bltnode(a1),d0
-	add.l	c2p_screen-c2p_bltnode(a1),d0
-	add.l	c2p_scroffs-c2p_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_scroffs-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltdpt(a0)
-	move.w	c2p_pixels16+2-c2p_bltnode(a1),bltsizv(a0)
+	move.w	c2p2x1_8_c4b1_gen_pixels16+2-c2p2x1_8_c4b1_gen_bltnode(a1),bltsizv(a0)
 	move.w	#2,bltsizh(a0)
-	move.l	#c2p2x1_8_c4b1_54,c2p_bltroutptr-c2p_bltnode(a1)
+	move.l	#c2p2x1_8_c4b1_gen_54,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
 	rts
 
-c2p2x1_8_c4b1_54
-	move.l	#c2p_blitbuf+4,bltapt(a0)
-	move.l	#c2p_blitbuf+4,bltbpt(a0)
-	move.l	c2p_bplsize-c2p_bltnode(a1),d0
+c2p2x1_8_c4b1_gen_54
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	addq.l	#4,d0
+	move.l	d0,bltapt(a0)
+	move.l	d0,bltbpt(a0)
+	move.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	lsl.l	#3,d0
-	sub.l	c2p_bplsize-c2p_bltnode(a1),d0
-	add.l	c2p_screen-c2p_bltnode(a1),d0
-	add.l	c2p_scroffs-c2p_bltnode(a1),d0
+	sub.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_scroffs-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltdpt(a0)
-	move.w	c2p_pixels16+2-c2p_bltnode(a1),bltsizv(a0)
+	move.w	c2p2x1_8_c4b1_gen_pixels16+2-c2p2x1_8_c4b1_gen_bltnode(a1),bltsizv(a0)
 	move.w	#2,bltsizh(a0)
-	move.l	#c2p2x1_8_c4b1_55,c2p_bltroutptr-c2p_bltnode(a1)
+	move.l	#c2p2x1_8_c4b1_gen_55,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
 	rts
 
-c2p2x1_8_c4b1_55
-	move.l	#c2p_blitbuf-14,d0
-	add.l	c2p_pixels-c2p_bltnode(a1),d0
+c2p2x1_8_c4b1_gen_55
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	sub.l	#14,d0
+	add.l	c2p2x1_8_c4b1_gen_pixels-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltapt(a0)
 	move.l	d0,bltbpt(a0)
-	move.l	c2p_screen-c2p_bltnode(a1),d0
-	add.l	c2p_scroffs2-c2p_bltnode(a1),d0
+	move.l	c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_scroffs2-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltdpt(a0)
 	move.w	#$1de4,bltcon0(a0)
 	move.w	#$0002,bltcon1(a0)
-	move.w	c2p_pixels16+2-c2p_bltnode(a1),bltsizv(a0)
+	move.w	c2p2x1_8_c4b1_gen_pixels16+2-c2p2x1_8_c4b1_gen_bltnode(a1),bltsizv(a0)
 	move.w	#2,bltsizh(a0)
-	move.l	#c2p2x1_8_c4b1_56,c2p_bltroutptr-c2p_bltnode(a1)
+	move.l	#c2p2x1_8_c4b1_gen_56,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
 	rts
 
-c2p2x1_8_c4b1_56
-	move.l	#c2p_blitbuf-2,d0
-	add.l	c2p_pixels-c2p_bltnode(a1),d0
+c2p2x1_8_c4b1_gen_56
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	subq.l	#2,d0
+	add.l	c2p2x1_8_c4b1_gen_pixels-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltapt(a0)
 	move.l	d0,bltbpt(a0)
-	move.l	c2p_bplsize-c2p_bltnode(a1),d0
+	move.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	add.l	d0,d0
-	add.l	c2p_screen-c2p_bltnode(a1),d0
-	add.l	c2p_scroffs2-c2p_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_scroffs2-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltdpt(a0)
 	move.w	#$1de4,bltcon0(a0)
 	move.w	#$0002,bltcon1(a0)
-	move.w	c2p_pixels16+2-c2p_bltnode(a1),bltsizv(a0)
+	move.w	c2p2x1_8_c4b1_gen_pixels16+2-c2p2x1_8_c4b1_gen_bltnode(a1),bltsizv(a0)
 	move.w	#2,bltsizh(a0)
-	move.l	#c2p2x1_8_c4b1_57,c2p_bltroutptr-c2p_bltnode(a1)
+	move.l	#c2p2x1_8_c4b1_gen_57,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
 	rts
 
-c2p2x1_8_c4b1_57
-	move.l	#c2p_blitbuf-6,d0
-	add.l	c2p_pixels-c2p_bltnode(a1),d0
+c2p2x1_8_c4b1_gen_57
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	subq.l	#6,d0
+	add.l	c2p2x1_8_c4b1_gen_pixels-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltapt(a0)
 	move.l	d0,bltbpt(a0)
-	move.l	c2p_bplsize-c2p_bltnode(a1),d0
+	move.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	lsl.l	#2,d0
-	add.l	c2p_screen-c2p_bltnode(a1),d0
-	add.l	c2p_scroffs2-c2p_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_scroffs2-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltdpt(a0)
 	move.w	#$1de4,bltcon0(a0)
 	move.w	#$0002,bltcon1(a0)
-	move.w	c2p_pixels16+2-c2p_bltnode(a1),bltsizv(a0)
+	move.w	c2p2x1_8_c4b1_gen_pixels16+2-c2p2x1_8_c4b1_gen_bltnode(a1),bltsizv(a0)
 	move.w	#2,bltsizh(a0)
-	move.l	#c2p2x1_8_c4b1_58,c2p_bltroutptr-c2p_bltnode(a1)
+	move.l	#c2p2x1_8_c4b1_gen_58,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
 	rts
 
-c2p2x1_8_c4b1_58
-	move.l	#c2p_blitbuf-10,d0
-	add.l	c2p_pixels-c2p_bltnode(a1),d0
+c2p2x1_8_c4b1_gen_58
+	move.l	c2p2x1_8_c4b1_gen_blitbuf-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	sub.l	#10,d0
+	add.l	c2p2x1_8_c4b1_gen_pixels-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltapt(a0)
 	move.l	d0,bltbpt(a0)
-	move.l	c2p_bplsize-c2p_bltnode(a1),d0
+	move.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	add.l	d0,d0
-	add.l	c2p_bplsize-c2p_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_bplsize-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	add.l	d0,d0
-	add.l	c2p_screen-c2p_bltnode(a1),d0
-	add.l	c2p_scroffs2-c2p_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_screen-c2p2x1_8_c4b1_gen_bltnode(a1),d0
+	add.l	c2p2x1_8_c4b1_gen_scroffs2-c2p2x1_8_c4b1_gen_bltnode(a1),d0
 	move.l	d0,bltdpt(a0)
 	move.w	#$1de4,bltcon0(a0)
 	move.w	#$0002,bltcon1(a0)
-	move.w	c2p_pixels16+2-c2p_bltnode(a1),bltsizv(a0)
+	move.w	c2p2x1_8_c4b1_gen_pixels16+2-c2p2x1_8_c4b1_gen_bltnode(a1),bltsizv(a0)
 	move.w	#2,bltsizh(a0)
-	move.l	#c2p2x1_8_c4b1_51,c2p_bltroutptr-c2p_bltnode(a1)
+	move.l	#c2p2x1_8_c4b1_gen_51,c2p2x1_8_c4b1_gen_bltroutptr-c2p2x1_8_c4b1_gen_bltnode(a1)
 	moveq	#0,d0
 	rts
 
-c2p_copyinitblock
+c2p2x1_8_c4b1_gen_copyinitblock
 	movem.l	a0-a1,-(sp)
-	lea	c2p_datanew,a0
-	lea	c2p_data,a1
+	lea	c2p2x1_8_c4b1_gen_datanew,a0
+	lea	c2p2x1_8_c4b1_gen_data,a1
 	moveq	#16-1,d0
 .copy	move.l	(a0)+,(a1)+
 	dbf	d0,.copy
@@ -368,32 +392,28 @@ c2p_copyinitblock
 	rts
 
 	cnop 0,4
-c2p_bltnode
+c2p2x1_8_c4b1_gen_bltnode
 	dc.l	0
-c2p_bltroutptr
+c2p2x1_8_c4b1_gen_bltroutptr
 	dc.l	0
 	dc.b	$40,0
 	dc.l	0
-c2p_bltroutcleanup
-	dc.l	c2p_blitcleanup
-c2p_blitfin dc.b 0
-c2p_blitactive dc.b 0
+c2p2x1_8_c4b1_gen_bltroutcleanup
+	dc.l	c2p2x1_8_c4b1_gen_blitcleanup
+c2p2x1_8_c4b1_gen_blitfin dc.b 0
+c2p2x1_8_c4b1_gen_blitactive dc.b 0
 
 	cnop	0,4
-c2p_data
-c2p_screen dc.l	0
-c2p_scroffs dc.l 0
-c2p_scroffs2 dc.l 0
-c2p_bplsize dc.l 0
-c2p_pixels dc.l 0
-c2p_pixels16 dc.l 0
+c2p2x1_8_c4b1_gen_data
+c2p2x1_8_c4b1_gen_screen dc.l	0
+c2p2x1_8_c4b1_gen_scroffs dc.l 0
+c2p2x1_8_c4b1_gen_scroffs2 dc.l 0
+c2p2x1_8_c4b1_gen_bplsize dc.l 0
+c2p2x1_8_c4b1_gen_pixels dc.l 0
+c2p2x1_8_c4b1_gen_pixels16 dc.l 0
+c2p2x1_8_c4b1_gen_blitbuf dc.l 0
 	ds.l	16
 
 	cnop 0,4
-c2p_datanew
+c2p2x1_8_c4b1_gen_datanew
 	ds.l	16
-
-	section	bss_c,bss_c
-
-c2p_blitbuf
-	ds.b	CHUNKYXMAX*CHUNKYYMAX
