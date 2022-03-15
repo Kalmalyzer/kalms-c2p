@@ -51,6 +51,8 @@ CHUNKYXMAX EQU	BPLX
 CHUNKYYMAX EQU	BPLY
 	ENDC
 
+	include	lvo/exec_lib.i
+
 	section	code,code
 
 ; d0.w	chunkyx [chunky-pixels]
@@ -60,6 +62,9 @@ CHUNKYYMAX EQU	BPLY
 ; d4.w	(rowlen) [bytes] -- offset between one row and the next in a bpl
 ; d5.l	(bplsize) [bytes] -- offset between one row in one bpl and the next bpl
 
+	XDEF	_c2p1x1_8_c3_sc_gen_smcinit
+	XDEF	c2p1x1_8_c3_sc_gen_smcinit
+_c2p1x1_8_c3_sc_gen_smcinit
 c2p1x1_8_c3_sc_gen_smcinit
 	move.l	d3,-(sp)
 	mulu.w	d0,d3
@@ -85,7 +90,7 @@ c2p1x1_8_c3_sc_gen_smcinit
 	sub.b	d3,-1(a0)
 .nreloc
 
-	move.l	execbase,a6
+	move.l	$4.w,a6
 	jsr	_LVOCacheClearU(a6)
 
 	move.l	(sp)+,d3
@@ -98,6 +103,8 @@ c2p1x1_8_c3_sc_gen_smcinit
 ; d4.w	(rowlen) [bytes] -- offset between one row and the next in a bpl
 ; d5.l	(bplsize) [bytes] -- offset between one row in one bpl and the next bpl
 
+	XDEF	_c2p1x1_8_c3_sc_gen_init
+	XDEF	c2p1x1_8_c3_sc_gen_init
 _c2p1x1_8_c3_sc_gen_init
 c2p1x1_8_c3_sc_gen_init
 	move.l	d3,-(sp)
@@ -112,9 +119,10 @@ c2p1x1_8_c3_sc_gen_init
 ; a0	c2pscreen
 ; a1	bitplanes
 
+	XDEF	_c2p1x1_8_c3_sc_gen
+	XDEF	c2p1x1_8_c3_sc_gen
 _c2p1x1_8_c3_sc_gen
 c2p1x1_8_c3_sc_gen
-	cmp.w	#.xend-.x,d0
 	movem.l	d2-d7/a2-a6,-(sp)
 
 	add.w	#BPLSIZE,a1
@@ -318,7 +326,7 @@ c2p1x1_8_c3_sc_gen
 .xend
 	move.l	d7,-BPLSIZE(a1)
 	move.l	a5,BPLSIZE(a1)
-	move.l	d7,(a1)+
+	move.l	a6,(a1)+
 	move.l	a4,BPLSIZE*2-4(a1)
 
 	addq.l	#4,sp
