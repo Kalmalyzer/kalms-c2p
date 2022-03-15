@@ -5,6 +5,7 @@ set(ASM_SOURCES
   c2p1x1_5_c3b1_030.s
   c2p1x1_5_c5_030.s
   c2p1x1_5_c5_060.s
+  c2p1x1_6_c3_sc_gen.s
   c2p1x1_6_c3b1_030.s
   c2p1x1_6_c5_030.s
   c2p1x1_6_c5_030_2.s
@@ -31,6 +32,7 @@ set(C_SOURCES
   c2p1x1_5_c3b1_030_test.c c2p1x1_5_c3b1_030.h
   c2p1x1_5_c5_030_test.c c2p1x1_5_c5_030.h
   c2p1x1_5_c5_060_test.c c2p1x1_5_c5_060.h
+  c2p1x1_6_c3_sc_gen_test.c c2p1x1_6_c3_sc_gen.h
   c2p1x1_6_c3b1_030_test.c c2p1x1_6_c3b1_030.h
   c2p1x1_6_c5_030_test.c c2p1x1_6_c5_030.h
   c2p1x1_6_c5_030_2_test.c c2p1x1_6_c5_030_2.h
