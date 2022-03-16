@@ -24,10 +24,6 @@
 ;   2000-05-27: Bugfixes & speedup (now almost at copyspeed on 030/50)
 ;
 
-	xdef	_c2p2x2_8_c5_bm
-	xdef	c2p2x2_8_c5_bm
-
-	incdir	include:
 	include	graphics/gfx.i
 
 
@@ -60,6 +56,8 @@ C2P2X2_8_C5_BM_SIZEOF		rs.b	0
 ; a0	chunkyscreen
 ; a1	BitMap
 
+	XDEF	_c2p2x2_8_c5_bm
+	XDEF	c2p2x2_8_c5_bm
 _c2p2x2_8_c5_bm
 c2p2x2_8_c5_bm
 	movem.l	d2-d7/a2-a6,-(sp)

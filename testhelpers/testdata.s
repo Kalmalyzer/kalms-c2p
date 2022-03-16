@@ -1,6 +1,12 @@
 
 		section	data,data
 
+		XDEF	random_160x256x4bpl_chunky
+		XDEF	_random_160x256x4bpl_chunky
+random_160x256x4bpl_chunky
+_random_160x256x4bpl_chunky
+		incbin	random_160x256x4bpl_chunky.dat
+
 		XDEF	random_160x256x6bpl_chunky
 		XDEF	_random_160x256x6bpl_chunky
 random_160x256x6bpl_chunky

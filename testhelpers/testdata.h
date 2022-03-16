@@ -6,6 +6,7 @@ extern "C" {
 
 #include <stdint.h>
 
+extern uint8_t random_160x256x4bpl_chunky[];
 extern uint8_t random_160x256x6bpl_chunky[];
 extern uint8_t random_160x256x8bpl_chunky[];
 extern uint8_t random_320x256x2bpl_chunky[];
