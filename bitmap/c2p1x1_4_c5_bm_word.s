@@ -240,7 +240,7 @@ c2p1x1_4_c5_bm_word
 
 	move.l	a0,a2			; Ptr to end of line + 1 iter
 	add.w	C2P1X1_4_C5_BM_WORD_CHUNKYX(sp),a2
-	add.w	#32,a2
+	add.w	#16,a2
 
 	movem.l	a0-a2/d1/d3,-(sp)
 
