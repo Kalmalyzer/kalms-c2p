@@ -39,3 +39,32 @@ UTEST(bitmap, c2p1x1_4_c5_bm_word) {
 
 	ASSERT_ARRAY_EQ(random_320x256x8bpl_planar, tempbuf, bplsize * depth);
 }
+
+UTEST(bitmap, c2p1x1_4_c5_bm_word_modulo) {
+
+	const int chunkyx = 224;
+	const int chunkyy = 240;
+	const int scroffsx = 32;
+	const int scroffsy = 10;
+	const int bplsize = 320 * 256 / 8;
+	const int depth = 4;
+
+	struct BitMap bitmap = {
+		.BytesPerRow = 320 / 8,
+		.Rows = 256,
+		.Flags = 0,
+		.Depth = depth,
+		.Planes = {
+			tempbuf + bplsize * 0,
+			tempbuf + bplsize * 1,
+			tempbuf + bplsize * 2,
+			tempbuf + bplsize * 3,
+		},
+	};
+
+	memset(tempbuf, 0, bplsize * depth);
+
+	c2p1x1_4_c5_bm_word(chunkyx, chunkyy, scroffsx, scroffsy, random_224x240x4bpl_chunky, &bitmap);
+
+	ASSERT_ARRAY_EQ(random_224x240x8bpl_offs32x10_320x256x8bpl_planar, tempbuf, bplsize * depth);
+}

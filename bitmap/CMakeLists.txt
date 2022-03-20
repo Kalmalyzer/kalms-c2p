@@ -4,6 +4,7 @@ set(ASM_SOURCES
   c2p1x1_4_c5_bm_word.s
   c2p1x1_6_c5_bm_040.s
   c2p1x1_6_c5_bm.s
+  c2p1x1_6_c5_bm_word.s
   c2p1x1_8_c5_bm_040.s
   c2p1x1_8_c5_bm.s
   c2p2x1_4_c5_bm.s
@@ -17,6 +18,7 @@ set(C_SOURCES
   c2p1x1_4_c5_bm_word_test.c c2p1x1_4_c5_bm_word.h
   c2p1x1_6_c5_bm_040_test.c c2p1x1_6_c5_bm_040.h
   c2p1x1_6_c5_bm_test.c c2p1x1_6_c5_bm.h
+  c2p1x1_6_c5_bm_word_test.c c2p1x1_6_c5_bm_word.h
   c2p1x1_8_c5_bm_040_test.c c2p1x1_8_c5_bm_040.h
   c2p1x1_8_c5_bm_test.c c2p1x1_8_c5_bm.h
   c2p2x1_4_c5_bm_test.c c2p2x1_4_c5_bm.h
