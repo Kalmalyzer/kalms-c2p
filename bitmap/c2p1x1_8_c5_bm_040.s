@@ -18,10 +18,6 @@
 ;   X-Offset must be set to an even multiple of 8
 ;
 
-	xdef	_c2p1x1_8_c5_bm_040
-	xdef	c2p1x1_8_c5_bm_040
-
-	incdir	include:
 	include	graphics/gfx.i
 
 
@@ -49,6 +45,8 @@ C2P1X1_8_C5_BM_040_SIZEOF	rs.b	0
 ; a0	chunkyscreen
 ; a1	BitMap
 
+	XDEF	_c2p1x1_8_c5_bm_040
+	XDEF	c2p1x1_8_c5_bm_040
 _c2p1x1_8_c5_bm_040
 c2p1x1_8_c5_bm_040
 	movem.l	d2-d7/a2-a6,-(sp)

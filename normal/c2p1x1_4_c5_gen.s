@@ -26,6 +26,9 @@ CHUNKYYMAX EQU	BPLY
 ; d4.w	(rowlen) [bytes] -- offset between one row and the next in a bpl
 ; d5.l	(bplsize) [bytes] -- offset between one row in one bpl and the next bpl
 
+	XDEF	_c2p1x1_4_c5_gen_init
+	XDEF	c2p1x1_4_c5_gen_init
+_c2p1x1_4_c5_gen_init
 c2p1x1_4_c5_gen_init
 	movem.l	d2-d3,-(sp)
 	andi.l	#$ffff,d0
@@ -40,6 +43,9 @@ c2p1x1_4_c5_gen_init
 ; a0	c2pscreen
 ; a1	bitplanes
 
+	XDEF	_c2p1x1_4_c5_gen
+	XDEF	c2p1x1_4_c5_gen
+_c2p1x1_4_c5_gen
 c2p1x1_4_c5_gen
 	movem.l	d2-d7/a2-a6,-(sp)
 

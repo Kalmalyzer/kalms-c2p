@@ -20,10 +20,6 @@
 ;   2016-08-29: Initial version
 ;
 
-	xdef	_c2p2x1_8_c5_bm
-	xdef	c2p2x1_8_c5_bm
-
-	incdir	include:
 	include	graphics/gfx.i
 
 
@@ -56,6 +52,8 @@ C2P2X1_8_C5_BM_SIZEOF		rs.b	0
 ; a0	chunkyscreen
 ; a1	BitMap
 
+	XDEF	_c2p2x1_8_c5_bm
+	XDEF	c2p2x1_8_c5_bm
 _c2p2x1_8_c5_bm
 c2p2x1_8_c5_bm
 	movem.l	d2-d7/a2-a6,-(sp)

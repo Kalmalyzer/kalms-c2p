@@ -13,6 +13,9 @@
 ; a0	chunkybuffer
 ; a1	bitplanes
 
+	XDEF	_c2p1x1_4_c5_word
+	XDEF	c2p1x1_4_c5_word
+_c2p1x1_4_c5_word
 c2p1x1_4_c5_word
 	movem.l	d2-d7/a2-a6,-(sp)
 

@@ -19,12 +19,9 @@
 ; History:
 ;   2016-08-29: Initial version
 ;   2016-08-30: Bugfixes
+;   2021-03-16: Bugfixes
 ;
 
-	xdef	_c2p2x1_4_c5_bm
-	xdef	c2p2x1_4_c5_bm
-
-	incdir	include:
 	include	graphics/gfx.i
 
 	section	code,code
@@ -36,6 +33,8 @@
 ; a0	chunkyscreen
 ; a1	BitMap
 
+	XDEF	_c2p2x1_4_c5_bm
+	XDEF	c2p2x1_4_c5_bm
 _c2p2x1_4_c5_bm
 c2p2x1_4_c5_bm
 	movem.l	d2-d7/a2-a6,-(sp)
@@ -126,6 +125,7 @@ c2p2x1_4_c5_bm
 	add.l	d7,d7
 	eor.l	d0,d7
 
+	swap	d5
 .y
 	swap	d5
 .x

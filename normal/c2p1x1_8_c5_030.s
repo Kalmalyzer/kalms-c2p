@@ -28,7 +28,7 @@ CHUNKYYMAX EQU	BPLY
 	ENDC
 
 ;	incdir	include:
-;	include	lvo/exec_lib.i
+	include	lvo/exec_lib.i
 
 
 	section	code,code
@@ -41,6 +41,9 @@ CHUNKYYMAX EQU	BPLY
 ; d5.l	bplsize [bytes] -- offset between one row in one bpl and the next bpl
 ; d6.l	(chunkylen) [bytes] -- offset between one row and the next in chunkybuf
 
+	XDEF	_c2p1x1_8_c5_030_smcinit
+	XDEF	c2p1x1_8_c5_030_smcinit
+_c2p1x1_8_c5_030_smcinit
 c2p1x1_8_c5_030_smcinit
 	movem.l	d2-d3/d5/a6,-(sp)
 	andi.l	#$ffff,d0
@@ -83,6 +86,9 @@ c2p1x1_8_c5_030_smcinit
 ; d5.l	(bplsize) [bytes] -- offset between one row in one bpl and the next bpl
 ; d6.l	(chunkylen) [bytes] -- offset between one row and the next in chunkybuf
 
+	XDEF	_c2p1x1_8_c5_030_init
+	XDEF	c2p1x1_8_c5_030_init
+_c2p1x1_8_c5_030_init
 c2p1x1_8_c5_030_init
 	movem.l	d2-d3,-(sp)
 	andi.l	#$ffff,d0
@@ -97,6 +103,9 @@ c2p1x1_8_c5_030_init
 ; a0	c2pscreen
 ; a1	bitplanes
 
+	XDEF	_c2p1x1_8_c5_030
+	XDEF	c2p1x1_8_c5_030
+_c2p1x1_8_c5_030
 c2p1x1_8_c5_030
 	movem.l	d2-d7/a2-a6,-(sp)
 
