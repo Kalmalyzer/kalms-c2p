@@ -1,9 +1,0 @@
-There is a set of unit tests that covers most routines.
-The test framework is a fork of https://github.com/sheredom/utest.h, adapted to work with amiga-gcc.
-The tests verify functionality but do not measure performance.
-
-To run the test suite:
-* Install CMake 3.10 or newer
-* Install Bebbo's amiga-gcc
-* Run `cmake clean build`
-* copy build/*/*_test to an Amiga/into an emulator, and run the executables
